@@ -1,0 +1,124 @@
+# The default ports on which the ReadyAPI TestEngine will be listening
+# Comment out to disable
+server:
+  applicationConnectors:
+    - type: http
+      port: 8080
+      # Only allow local requests. When set - only connections from localhost will be accepted.
+      # bindHost: 127.0.0.1
+
+#    - type: https
+#      port: 8443
+#      keyStorePath: example.keystore
+#      keyStorePassword: example
+#      validateCerts: false
+  adminConnectors: []
+#    - type: http
+#      port: 8081
+#    - type: https
+#      port: 8444
+#      keyStorePath: example.keystore
+#      keyStorePassword: example
+#      validateCerts: false
+  requestLog:
+    type: external
+logging:
+  type: external
+
+  # Server Log4J configuration file
+log4jConfigurationFile: log4j2.xml
+
+  # Edit the allowedConnectTargets property to control what hosts the ReadyAPI TestEngine can connect to.
+  # The property accepts a list (may contain just one element) of strings in the format accepted
+  # by java.net.SocketPermission - see http://docs.oracle.com/javase/8/docs/api/java/net/SocketPermission.html.
+  # Use a broadcast address (an IP address ending in 0) to allow connections to a whole subnet (see the last example
+  # below).
+  # The default wildcard will allow connections to all hosts and all ports.
+  # Some examples of valid strings:
+  #   allowedConnectTargets:
+  #     - *:8080
+  #     - www.google.com:443
+  #     - sunet.se:80-
+  #     - svd.se
+  #     - www.svd.se
+  #     - 10.153.12.0:80
+allowedConnectTargets:
+  - '*'
+
+  # Help improving the software by sending usage statistics to SmartBear
+usageStatisticsEnabled: true
+
+  # The number of concurrent jobs that the ReadyAPI TestEngine instance will accept.
+  # If a new job is submitted when the limit has been reached, it will be put on the queue and started later.
+maxConcurrentJobs: 10
+
+  # Setting the allowedFilePaths tells the server that some file paths are OK to read directly, i.e. the user
+  # will not have to add the files in the POST request. Set the property below to a list of
+  # paths to the directories that should be accessible to the TestEngine.
+  # For instance, setting the property to
+  #   allowedFilePaths:
+  #     - /shared
+  #     - /workgroupfiles
+  # will allow users to post a project which will use the
+  # input file /shared/data.csv in a data source and write data to the file /workgroupfiles/data_sink.xls using a
+  # data sink test step.
+allowedFilePaths: []
+
+# maxDaysToKeep and maxJobsToKeep can be used together. The option that limits the history the most will be used.
+
+# Specifies how many days jobs will be kept when ´DELETE /testjobs´ endpoint is called and query parameter ´before´ is missing.
+# It accepts only 0 , -1 and positive integer values.
+# To disable this config use -1 as value
+maxDaysToKeep: 60
+
+# Specifies how many jobs will be kept when ´DELETE /testjobs´ endpoint is called and query parameter ´before´ is missing.
+# It accepts only 0 , -1 and positive integer values.
+# To disable this config use -1 as value
+maxJobsToKeep: -1
+
+# Specifies if test steps are allowed connecting to databases using JDBC.
+# This affects JDBC request test steps and data source test steps of type JDBC.
+# Enabling these can potentially be a security risk as these steps could read local file based databases on the server.
+testStepJdbcConnectionsAllowed: false
+
+# Uncomment this if you want to report metrics to a graphite server
+#metrics:
+#  reporters:
+#    - type: graphite
+#      host: localhost
+#      port: 2003
+#      prefix: testengine
+
+database:
+  driverClass: org.h2.Driver
+  user: smart
+  password: bear
+  url: jdbc:h2:~/.readyapi/db/testengine
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+
+  # the timeout before a connection validation queries fail
+  #validationQueryTimeout: 3s
+
+  # the minimum number of connections to keep open
+  minSize: 4
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+
+  # the amount of time to sleep between runs of the idle connection validation, abandoned cleaner and idle pool resizing
+  evictionInterval: 10s
+
+  # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
+  minIdleTime: 1 minute

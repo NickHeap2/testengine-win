@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  Log4j XML configuration file for ReadyAPI TestServer.                -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+<Configuration>
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
+        </Console>
+        <RollingFile name="ERRORFILE"
+                     fileName="${sys:user.home}/.readyapi/logs/readyapi-testengine-errors.log"
+                     filePattern="${sys:user.home}/.readyapi/logs/readyapi-testengine-errors.log.%i"
+                     append="true">
+            <PatternLayout pattern="%d %-5p [%c{1}] %m%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1000"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.eviware" level="INFO">
+        </Logger>
+        <Logger name="com.smartbear" level="INFO">
+        </Logger>
+        <Logger name="org.apache.commons.httpclient" level="ERROR">
+        </Logger>
+        <Logger name="org.eclipse.jetty" level="INFO">
+        </Logger>
+        <Root level="INFO">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="ERRORFILE"/>
+        </Root>
+    </Loggers>
+</Configuration>

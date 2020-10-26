@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TestStepParametersReport" language="groovy" pageWidth="535" pageHeight="842" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<template><![CDATA["../../styles.jrtx"]]></template>	
+	<field name="iconPath" class="java.lang.String"/>
+	<field name="testStepName" class="java.lang.String"/>
+	<field name="parameters" class="java.util.List"/>
+	<columnHeader>
+		<band height="47">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="SmallHeader" x="0" y="0" width="535" height="27"/>
+				<textElement/>
+                <textFieldExpression class="java.lang.String"><![CDATA["Test Step Parameters"]]></textFieldExpression>
+			</textField>		
+			<staticText>
+				<reportElement style="ColumnHeader" x="0" y="27" width="535" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Test steps]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Prevent">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="20" y="4" width="515" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{testStepName}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RealSize" isUsingCache="true" onErrorType="Blank">
+				<reportElement x="0" y="4" width="16" height="16"/>
+				<imageExpression class="java.lang.String"><![CDATA["logo:" + $F{iconPath}.substring( $F{iconPath}.lastIndexOf( '/'))]]></imageExpression>
+			</image>
+			<subreport isUsingCache="false">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="22" width="535" height="2"/>
+				<dataSourceExpression>new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{parameters})</dataSourceExpression>
+				<subreportExpression class="java.lang.String">"subreport:TestStepSubParametersReport"</subreportExpression>
+			</subreport>
+		</band>
+	</detail>	
+</jasperReport>
